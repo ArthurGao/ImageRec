@@ -1,0 +1,100 @@
+openapi: 3.0.0
+info:
+  title: Image Classification API
+  version: 1.0.0
+paths:
+  /image/upload:
+    post:
+      summary: Upload an image for processing.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Upload successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imageId:
+                    type: string
+                  status:
+                    type: string
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '402':
+          description: Payment required
+        '500':
+          description: Internal server error
+  /image/status/{imageId}:
+    get:
+      summary: Get the status of a processing request.
+      parameters:
+        - name: imageId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Status retrieval successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imageId:
+                    type: string
+                  status:
+                    type: string
+                  classification:
+                    type: string
+                  confidence:
+                    type: number
+                    format: float
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '402':
+          description: Payment required
+        '500':
+          description: Internal server error
+  /image/history:
+    get:
+      summary: Get the history of user's requests.
+      responses:
+        '200':
+          description: History retrieval successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    imageId:
+                      type: string
+                    classification:
+                      type: string
+                    confidence:
+                      type: number
+                      format: float
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '402':
+          description: Payment required
+        '500':
+          description: Internal server error
